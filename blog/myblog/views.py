@@ -5,7 +5,7 @@ from django.views import View
 
 
 class MainView(View):
-    template_name = 'myblog\index.html'
+    template_name = 'myblog\home.html'
 
     def get(self, request):
         return render(request, self.template_name)
