@@ -11,12 +11,12 @@
         <div class="col-lg-8">
             <nav aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ post.h1 }}</li>
                 </ol>
             </nav>
-  
-            <img class="img-fluid rounded " src={post.image.url} alt="">
+
+            <img class="img-fluid rounded " src={{ post.image.url }} alt="">
             <hr>
             <p class="lead">{{ post.content|safe }}</p>
             <hr>
@@ -26,9 +26,10 @@
 
             <hr>
             {% include './block/comments.html' %}
-                <div>{% include './block/aside.html' %}</div>
         </div>
+        {% include './block/aside.html' %}
     </div>
 </div>
+
 
 {% endblock %}
