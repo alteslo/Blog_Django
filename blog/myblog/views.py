@@ -35,4 +35,20 @@ class PostDetailView(View):
 
 
 class SignUpView(View):
+    form = SignUpForm
+    template = 'myblog/signup.html'
 
+    def get(self, request):
+        form = self.form
+        context = {'form': form}
+        return render(request, self.template, context)
+
+    def post(self, request):
+        form = self.form(request.POST)
+        context = {'form': form}
+        if form.is_valid():
+            user = form.save()
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/')
+        return render(request, self.template, context)
