@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from .models import Post
 from django.core.paginator import Paginator
+from django.contrib.auth import login
+from django.http import HttpResponseRedirect
 
+from .models import Post
+from .forms import SignUpForm
 # Create your views here.
 
 
@@ -29,3 +32,7 @@ class PostDetailView(View):
         post = get_object_or_404(Post, url=slug)
         context = {'post': post}
         return render(request, self.template, context)
+
+
+class SignUpView(View):
+
