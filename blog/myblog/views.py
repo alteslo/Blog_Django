@@ -2,11 +2,11 @@ from venv import create
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 
 from .models import Post
-from .forms import SignUpForm
+from .forms import SignUpForm, SignInForm
 # Create your views here.
 
 
@@ -53,3 +53,26 @@ class SignUpView(View):
             login(request, user)
             return HttpResponseRedirect('/')
         return render(request, self.template, context)
+
+
+class SignInView(View):
+    template = 'myblog/signin.html'
+
+    def get(self, request):
+        form = SignInForm()
+        return render(request, self.template, context={
+            'form': form,
+        })
+
+    def post(self, request):
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username, password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+        return render(request, self.template, context={
+            'form': form,
+        })
