@@ -1,3 +1,4 @@
+from venv import create
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
@@ -12,11 +13,11 @@ from .forms import SignUpForm
 class MainView(View):
     template_name = 'myblog/home.html'
     post = Post
-    paginator = Paginator
 
     def get(self, request):
-        posts = self.post.objects.all()
-        paginator = self.paginator(posts, 6)
+        # выборка постов неупорядочена и поэтому выводится предупреждение
+        posts = self.post.objects.all().order_by('created_at')
+        paginator = Paginator(posts, 6)
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
