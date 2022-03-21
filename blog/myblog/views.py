@@ -69,7 +69,7 @@ class SignInView(View):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(request, username, password)
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return HttpResponseRedirect('/')

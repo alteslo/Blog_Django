@@ -1,4 +1,6 @@
 from django.urls import path
+from django.contrib.auth.views import LogoutView
+from django.conf import settings
 from . import views
 
 
@@ -7,4 +9,5 @@ urlpatterns = [
     path('blog/<slug>/', views.PostDetailView.as_view(), name='post_detail'),
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('signin/', views.SignInView.as_view(), name='signin'),
+    path('signout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='signout',),
 ]
