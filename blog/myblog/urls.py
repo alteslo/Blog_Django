@@ -10,4 +10,6 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('signin/', views.SignInView.as_view(), name='signin'),
     path('signout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='signout',),
+    path('contact/', views.FeedBackView.as_view(), name='contact'),
+    path('contact/success/', views.SuccessView.as_view(), name='success'),
 ]

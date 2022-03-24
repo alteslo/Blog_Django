@@ -12,16 +12,18 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from . import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = config.load_config('blog/.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c4wcc%!7ul_*@1ht38^7ew2x7^_6r38jp6@cos2bd0h)7_7ql!'
+SECRET_KEY = env.django.sekret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -160,3 +162,10 @@ CKEDITOR_CONFIGS = {
 
 ###################################
 LOGOUT_REDIRECT_URL = "/"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.email.host
+EMAIL_USE_TLS = env.email.use_tls
+EMAIL_PORT = env.email.port
+EMAIL_HOST_USER = env.email.host_user
+EMAIL_HOST_PASSWORD = env.email.host_password
