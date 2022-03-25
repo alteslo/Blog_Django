@@ -13,4 +13,5 @@ urlpatterns = [
     path('contact/', views.FeedBackView.as_view(), name='contact'),
     path('contact/success/', views.SuccessView.as_view(), name='success'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
+    path('tag/<slug:slug>/', views.TagView.as_view(), name="tag"),
 ]

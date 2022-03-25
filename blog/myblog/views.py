@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Q
 from django.core.mail import send_mail, BadHeaderError
+from taggit.models import Tag
 
 from .models import Post
 from .forms import SignUpForm, SignInForm, FeedBackForm
@@ -28,12 +29,15 @@ class MainView(View):
 
 
 class PostDetailView(View):
-    template = 'myblog/post_detail.html'
-
-    def get(self, request, slug):
+    def get(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, url=slug)
-        context = {'post': post}
-        return render(request, self.template, context)
+        common_tags = Post.tag.most_common()
+        last_posts = Post.objects.all().order_by('-id')[:5]
+        return render(request, 'myblog/post_detail.html', context={
+            'post': post,
+            'common_tags': common_tags,
+            'last_posts': last_posts
+        })
 
 
 class SignUpView(View):
@@ -126,4 +130,16 @@ class SearchResultsView(View):
             'title': 'Поиск',
             'results': page_obj,
             'count': paginator.count
+        })
+
+
+class TagView(View):
+    def get(self, request, slug, *args, **kwargs):
+        tag = get_object_or_404(Tag, slug=slug)
+        posts = Post.objects.filter(tag=tag)
+        common_tags = Post.tag.most_common()
+        return render(request, 'myblog/tag.html', context={
+            'title': f'#ТЕГ {tag}',
+            'posts': posts,
+            'common_tags': common_tags
         })
